@@ -1,0 +1,103 @@
+class Product:
+    def __init__(self, product_id, name, price, quantity):
+        self.product_id = product_id
+        self.name = name
+        self.price = price
+        self.quantity = quantity
+
+    def display_info(self):
+        print(f"Product ID: {self.product_id}")
+        print(f"Name: {self.name}")
+        print(f"Price: ${self.price:.2f}")
+        print(f"Quantity: {self.quantity}")
+
+class Inventory:
+    def __init__(self):
+        self.products = {}
+
+    def add_product(self, product):
+        self.products[product.product_id] = product
+        print(f"Product '{product.name}' added to the inventory.")
+
+    def update_product_quantity(self, product_id, quantity):
+        product = self.products.get(product_id)
+        if product:
+            product.quantity += quantity
+            print(f"Product '{product.name}' quantity updated to {product.quantity}.")
+        else:
+            print("Product not found in the inventory.")
+
+    def sell_product(self, product_id, quantity):
+        product = self.products.get(product_id)
+        if product:
+            if product.quantity >= quantity:
+                product.quantity -= quantity
+                print(f"Sold {quantity} units of product '{product.name}'.")
+            else:
+                print("Insufficient quantity in stock.")
+        else:
+            print("Product not found in the inventory.")
+
+    def view_product_info(self, product_id):
+        product = self.products.get(product_id)
+        if product:
+            product.display_info()
+        else:
+            print("Product not found in the inventory.")
+
+    def view_all_products(self):
+        if not self.products:
+            print("No products in the inventory.")
+        else:
+            print("=== Inventory ===")
+            for product_id, product in self.products.items():
+                print(f"Product ID: {product_id}, Name: {product.name}, Price: ${product.price:.2f}, Quantity: {product.quantity}")
+
+def main():
+    inventory = Inventory()
+
+    while True:
+        print("\n===== Inventory Management System =====")
+        print("1. Add Product")
+        print("2. Update Product Quantity")
+        print("3. Sell Product")
+        print("4. View Product Information")
+        print("5. View All Products")
+        print("6. Exit")
+
+        choice = input("Enter your choice (1-6): ")
+
+        if choice == "1":
+            product_id = input("Enter product ID: ")
+            name = input("Enter product name: ")
+            price = float(input("Enter product price: "))
+            quantity = int(input("Enter product quantity: "))
+            product = Product(product_id, name, price, quantity)
+            inventory.add_product(product)
+
+        elif choice == "2":
+            product_id = input("Enter product ID to update quantity: ")
+            quantity = int(input("Enter quantity to add: "))
+            inventory.update_product_quantity(product_id, quantity)
+
+        elif choice == "3":
+            product_id = input("Enter product ID to sell: ")
+            quantity = int(input("Enter quantity to sell: "))
+            inventory.sell_product(product_id, quantity)
+
+        elif choice == "4":
+            product_id = input("Enter product ID to view information: ")
+            inventory.view_product_info(product_id)
+
+        elif choice == "5":
+            inventory.view_all_products()
+
+        elif choice == "6":
+            print("Thank you for using the Inventory Management System.")
+            break
+
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
